@@ -57,11 +57,37 @@ public:
         }
         return dp[0][1][k];
     }
+     int solveSO(vector<int>&prices,int k){
+        vector<vector<vector<int>>>dp(2,vector<vector<int>>(2,vector<int>(k+1,0)));
+        int n = prices.size();
+        for(int i = n-1;i>=0;i--){
+             int profit  = 0;
+            for(int buy = 0 ;buy<2;buy++){
+                for(int limit= 1 ; limit<k+1 ; limit++){
+                     
+                        if(buy){
+                            int buy_profit = -prices[i]+ dp[1][0][limit];
+                            int skip = dp[1][1][limit];
+                            profit = max(buy_profit,skip);
+                            }
+                        else{
+                            int sell_profit = prices[i]+dp[1][1][limit-1];
+                            int skip= dp[1][0][limit];
+                           profit= max(sell_profit ,skip);
+                        }
+                         dp[0][buy][limit] =profit;
+                }
+                 
+            }
+           dp[1]= dp[0];
+        }
+        return dp[0][1][k];
+    }
      
     int maxProfit(int k, vector<int>& prices) {
         //vector<vector<vector<int>>>dp(prices.size()+1,vector<vector<int>>(2,vector<int>(k+1,-1)));
        // int ans = solveMemo(prices , 0 , true, k,dp);
-        int ans = solveTab(prices , k);
+        int ans = solveSO(prices , k);
         return ans;
     }
 };
