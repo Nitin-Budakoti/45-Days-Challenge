@@ -34,12 +34,36 @@ public:
          dp[i][buy][limit] =profit;
         return profit;
     }
+    int solveTab(vector<int>& prices){
+         vector<vector<vector<int>>>dp(prices.size()+1,vector<vector<int>>(2,vector<int>(3,0)));
+         int n = prices.size();
+        for(int i = n-1;i>=0;i--){
+             int profit  = 0;
+            for(int buy = 0 ;buy<2;buy++){
+                for(int limit= 1 ; limit<3 ; limit++){
+                     
+                        if(buy){
+                            int buy_profit = -prices[i]+ dp[i+1][0][limit];
+                            int skip = dp[i+1][1][limit];
+                            profit = max(buy_profit,skip);
+                            }
+                        else{
+                            int sell_profit = prices[i]+dp[i+1][1][limit-1];
+                            int skip= dp[i+1][0][limit];
+                           profit= max(sell_profit ,skip);
+                        }
+                         dp[i][buy][limit] =profit;
+                }
+            }
+        }
+        return dp[0][1][2];
+    }
     
     int maxProfit(vector<int>& prices) {
         //int ans = solveReccursive(prices,0,true,2);
         vector<vector<vector<int>>>dp(prices.size(),vector<vector<int>>(2,vector<int>(3,-1)));
         
-        int ans = solveMemo(prices,0,true,2,dp);
+        int ans = solveTab(prices);
         return ans;
         
     }
