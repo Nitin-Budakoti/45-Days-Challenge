@@ -58,12 +58,39 @@ public:
         }
         return dp[0][1][2];
     }
+    int solveSO(vector<int>&prices){
+        vector<vector<vector<int>>>dp(2,vector<vector<int>>(2,vector<int>(3,0)));
+        int n = prices.size();
+        for(int i = n-1;i>=0;i--){
+             int profit  = 0;
+            for(int buy = 0 ;buy<2;buy++){
+                for(int limit= 1 ; limit<3 ; limit++){
+                     
+                        if(buy){
+                            int buy_profit = -prices[i]+ dp[1][0][limit];
+                            int skip = dp[1][1][limit];
+                            profit = max(buy_profit,skip);
+                            }
+                        else{
+                            int sell_profit = prices[i]+dp[1][1][limit-1];
+                            int skip= dp[1][0][limit];
+                           profit= max(sell_profit ,skip);
+                        }
+                         dp[0][buy][limit] =profit;
+                }
+                 
+            }
+           dp[1]= dp[0];
+        }
+        return dp[0][1][2];
+    }
     
     int maxProfit(vector<int>& prices) {
         //int ans = solveReccursive(prices,0,true,2);
         vector<vector<vector<int>>>dp(prices.size(),vector<vector<int>>(2,vector<int>(3,-1)));
         
-        int ans = solveTab(prices);
+        //int ans = solveTab(prices);
+        int ans = solveSO(prices);
         return ans;
         
     }
