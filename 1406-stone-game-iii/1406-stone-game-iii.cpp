@@ -27,9 +27,26 @@ public:
     dp[i] = ans;
          return ans;
     }
+    
+    int solveTab(vector<int>arr){
+        vector<int>dp(arr.size()+1,0);
+        int n =arr.size();
+       
+        for(int i = n-1; i>=0;--i){
+             int ans = INT_MIN;
+             int total = 0;
+            for(int X = 1 ;X<=3;X++){
+                if(X+i-1>=arr.size()) break;
+                 total +=arr[X+i-1];
+                 ans = max(ans , total - dp[i+X]);
+        }
+           dp[i] = ans;
+        }
+        return dp[0];
+    }
     string stoneGameIII(vector<int>& stoneValue) {
-        vector<int>dp(stoneValue.size()+1,-1);
-       int ans = solveMemo(stoneValue,0,dp);
+        // vector<int>dp(stoneValue.size()+1,-1);
+       int ans = solveTab(stoneValue);
         if(ans>0) return "Alice";
         if(ans<0) return "Bob";
         return "Tie";
