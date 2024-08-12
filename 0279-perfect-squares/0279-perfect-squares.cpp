@@ -29,10 +29,31 @@ public:
         return ans;
     }
     
+    
+    
+    int solveTab(int n ){
+        vector<int>dp(n+1,0);
+        dp[0] = 1;
+       
+        for(int j = 1 ; j<=n;j++){           
+        int ans= INT_MAX;
+        int end = sqrt(j);
+        for( int i = 1 ; i<=end;i++ ){
+            int number = i*i;
+            ans = min(ans ,1+ dp[j-number]);
+            }
+        dp[j]= ans;
+        }
+    return dp[n];    
+    }
+    
+    
+    
     int numSquares(int n) {
         //int ans = solveReccursive(n);
-        vector<int>dp(n+1,-1);
-        int ans = solveMemo(n,dp);
+        // vector<int>dp(n+1,-1);
+        // int ans = solveMemo(n,dp);
+        int ans = solveTab(n);
         return ans-1;
     }
 };
