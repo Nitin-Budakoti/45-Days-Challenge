@@ -18,9 +18,23 @@ public:
         int minus = solveMemo(nums,target-nums[start],start+1,dp);
         return dp[{start,target}] = plus+minus;
     }
-    int findTargetSumWays(vector<int>& nums, int target) {
+    int solveTab(vector<int>&nums, int &tar){
         map<pair<int,int> ,int>dp;
-        int ans = solveMemo(nums,target,0,dp);
+        dp[{nums.size() ,0}] =1;
+        int sum =0;
+        for(int i = 0 ; i<nums.size();i++) sum+=nums[i];
+        for(int start = nums.size()-1;start>=0;start--){
+            for(int target = -sum; target<=sum;target++){
+                 int plus = dp.find({start+1,target+nums[start]})!=dp.end()? dp[{start+1,target+nums[start]}]:0;                 
+                 int minus = dp.find({start+1,target-nums[start]})!=dp.end()? dp[{start+1,target-nums[start]}]:0;
+                dp[{start,target}] = plus+minus;
+            }
+        }
+        return dp[{0,tar}];
+    }
+    int findTargetSumWays(vector<int>& nums, int target) {
+        //map<pair<int,int> ,int>dp;
+        int ans = solveTab(nums,target);
         return ans;
     }
 };
