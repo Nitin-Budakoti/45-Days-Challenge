@@ -35,9 +35,27 @@ public:
          dp[start] = flag;
         return flag;
     }
+    
+    bool solveTab(string &s ,vector<string>&dict){
+        vector<int>dp(s.length()+1,0);
+       dp[s.length()] = true;
+        for(int start =s.length()-1;start>=0;start--){
+            string word ="";
+            bool flag = false;
+            for(int i = start ; i<s.length();i++){
+                word+=s[i];
+                if(check(word , dict)){
+                    flag = flag || dp[i+1];
+                }
+            }
+             dp[start] = flag;
+        }
+        return dp[0];
+        
+    }
     bool wordBreak(string s, vector<string>& wordDict) {
-        vector<int>dp(s.length()+1,-1);
-        return solveMemo(s,wordDict,0,dp);
+        //vector<int>dp(s.length()+1,-1);
+        return solveTab(s,wordDict);
         
     }
 };
