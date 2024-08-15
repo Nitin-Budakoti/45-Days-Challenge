@@ -32,11 +32,30 @@ public:
         exclude = solveMemo(arr,i+1,m,n,dp);
         return dp[i][m][n]= max(include,exclude);
     }
+    
+    int solveTab(vector<pair<int,int>>&arr, int x , int y){
+         vector<vector<vector<int>>>dp(arr.size()+1,vector<vector<int>>(x+1 ,vector<int>(y+1,0)));
+         int n = arr.size();
+         for(int i = n-1; i>=0;--i){
+             for(int m = 0 ; m<=x;m++){
+                 for(int n = 0 ; n<=y;n++){
+                     int zeros = arr[i].first;
+                     int ones  = arr[i].second;
+                     int include = 0 ,exclude = 0;
+                     if(m-zeros>=0 && n-ones>=0)
+                        include = 1 + dp[i+1][m-zeros][n-ones];
+                     exclude = dp[i+1][m][n];
+                     dp[i][m][n]= max(include,exclude);
+                 }
+             }
+         }
+        return dp[0][x][y];
+    }
     int findMaxForm(vector<string>& strs, int m, int n) {
         vector<pair<int,int>>arr;
         convert(arr,strs);
         vector<vector<vector<int>>>dp(strs.size()+1,vector<vector<int>>(m+1 ,vector<int>(n+1,-1)));
-        int ans = solveMemo(arr,0,m,n,dp);
+        int ans = solveTab(arr,m,n);
         return ans;
         
     }
