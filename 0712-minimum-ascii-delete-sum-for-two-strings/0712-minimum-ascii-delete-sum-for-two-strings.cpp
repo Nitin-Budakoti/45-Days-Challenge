@@ -52,7 +52,7 @@ public:
         for(int i = s1.size()-1 ;i>=0;--i){
             for(int j = s2.size()-1;j>=0;--j){
                 if(s1[i]==s2[j])
-                   cost = solveMemo(s1,s2,i+1 ,j+1,dp);
+                   cost = dp[i+1][j+1];
                 else{
                     int cost1 = s1[i]+dp[i+1][j];
                     int cost2 = s2[j] +dp[i][j+1];
