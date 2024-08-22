@@ -16,7 +16,7 @@ public:
     }
     
     
-     int solveMemo(string s , string t, int i,int j,vector<vector<int>>&dp){
+     int solveMemo(string &s , string &t, int i,int j,vector<vector<int>>&dp){
         //base case
         if(j==t.length()) return 1;
         if(i ==s.length() ) return 0;
