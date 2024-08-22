@@ -26,10 +26,23 @@ public:
         }
         return dp[0][1];
     }
+      int solveso(vector<int>&arr){
+        vector<int>curr(arr.size()+2);
+          vector<int>next(arr.size()+2);
+        for(int i = arr.size()-1;i>=0 ;--i){
+            for(int t = arr.size();t>=0;--t){
+                 int include = arr[i]*t + next[t+1];
+                 int exclude = next[t];
+                     curr[t] =max(include,exclude);
+            }
+            next = curr;
+        }
+        return curr[1];
+    }
     int maxSatisfaction(vector<int>& satisfaction) {
         sort(satisfaction.begin() ,satisfaction.end());
         vector<vector<int>>dp(satisfaction.size()+1 ,vector<int>(satisfaction.size()+1,-1));
-        int ans = solveTab(satisfaction);
+        int ans = solveso(satisfaction);
         return ans;
     }
 };
