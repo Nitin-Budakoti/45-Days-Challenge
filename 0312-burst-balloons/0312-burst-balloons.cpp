@@ -11,11 +11,30 @@ public:
        return dp[s][e] = ans;
         
     }
+    int solveTab(vector<int>&nums,int n){
+      vector<vector<int>>dp(n+2,vector<int>(n+2,0));  
+        
+        for(int s =n;s>=1;s--){
+            for(int e = 1 ;e<=n;e++){
+                if(s>e) continue;
+                int ans = INT_MIN;
+                    for(int i =s;i<=e;++i){
+                       int cost = nums[s-1]*nums[i] *nums[e+1]+ dp[s][i-1] + dp[i+1][e];
+                        ans = max(ans,cost);
+                        
+                    }
+                       dp[s][e] = ans;
+            }
+        }
+        return dp[1][n];
+    }
     int maxCoins(vector<int>& nums) {
+        int n =nums.size();
         nums.insert(nums.begin(),1);
         nums.insert(nums.end(),1);
-        vector<vector<int>>dp(nums.size(),vector<int>(nums.size(),-1));
-        int ans = solveReccursive(nums,1,nums.size()-2 ,dp);
+        
+        
+        int ans = solveTab(nums,n);
         return ans;
     }
 };
